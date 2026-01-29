@@ -1,14 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Meditation</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧘</text></svg>">
+    <link href='/style.css' rel='stylesheet'>
 </head>
-<body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+<body data-theme="forest">
+    <header role="banner">
+        <div class="theme-selector" role="group" aria-label="Select a theme">
+            <button data-theme="forest" aria-pressed="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tree"><path d="M12 22V16M8 19H16M15 16L12 13L9 16M12 13V4M12 4H15L12 1L9 4H12Z"/></svg>
+                <span>Forest</span>
+            </button>
+            <button data-theme="ocean" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-wind"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                <span>Ocean</span>
+            </button>
+            <button data-theme="mountain" aria-pressed="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mountain"><path d="M17 8l-4.5 4.5-2.5-2.5-5 5L1 17h22z"/></svg>
+                <span>Mountain</span>
+            </button>
+        </div>
+        <div class="progress-tracker" role="status">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <p>Sessions Completed: <span id="session-count">0</span></p>
+        </div>
+        <button id="zen-mode">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <span>Zen Mode</span>
+        </button>
+        <button id="about-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>About</span>
+        </button>
+    </header>
+    <main class="app" role="main">
+        <section class="meditation-container" role="region" aria-label="Meditation Area">
+            <div class="breathing-circle-container">
+                <div class="breathing-circle" role="img" aria-label="Breathing animation"></div>
+                <canvas id="visualizer" aria-hidden="true"></canvas>
+            </div>
+            <div class="timer-container">
+                <meditation-timer></meditation-timer>
+            </div>
+        </section>
+        <section class="controls-container" role="region" aria-label="Controls">
+            <div class="audio-controls" role="group" aria-label="Calming Sounds">
+                <h3>Calming Sounds</h3>
+                <button data-sound="rain">Rain</button>
+                <button data-sound="forest">Forest</button>
+                <button data-sound="ocean">Ocean</button>
+            </div>
+            <div class="affirmation-container">
+                <h3>Daily Affirmation</h3>
+                <p id="affirmation" aria-live="polite">I am calm and at peace.</p>
+                <button id="new-affirmation">New Affirmation</button>
+            </div>
+        </section>
+    </main>
+    <script defer type="module" src="/main.js"></script>
+    <div id="notification" role="alert" aria-hidden="true">
+        <p>Meditation session complete!</p>
+    </div>
+    <section id="about-section" class="modal" hidden>
+        <div class="modal-content">
+            <button id="close-about" class="close-btn">&times;</button>
+            <h2>About Daily Meditation</h2>
+            <p>This app is designed to help you find a moment of calm in your day.</p>
+            <h3>How to Use:</h3>
+            <ul>
+                <li>Choose a theme to change the background and ambiance.</li>
+                <li>Select a calming sound to help you focus.</li>
+                <li>Set your desired meditation time and press "Start".</li>
+                <li>Follow the breathing animation to guide your breath.</li>
+                <li>Click "New Affirmation" to get a new positive thought.</li>
+                <li>Enter "Zen Mode" to focus solely on the breathing animation.</li>
+            </ul>
+        </div>
+    </section>
 </body>
 </html>

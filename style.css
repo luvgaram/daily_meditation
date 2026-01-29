@@ -1,1 +1,412 @@
-/* Add styles here */
+:root {
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+    /* Default Theme (Forest) */
+    --primary-color: #2a7c4a; /* Dark green */
+    --secondary-color: #1e5835; /* Even darker green */
+    --text-color: #e8f5e9; /* Light grey-green */
+    --background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+body {
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-image 1s ease-in-out, background-color 0.5s ease-in-out;
+    position: relative;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Theme specific variables */
+body[data-theme="forest"] {
+    --primary-color: #2a7c4a;
+    --secondary-color: #1e5835;
+    --text-color: #e8f5e9;
+    --background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+body[data-theme="ocean"] {
+    --primary-color: #3d5a80; /* Blue-grey */
+    --secondary-color: #293f54; /* Darker blue-grey */
+    --text-color: #e0fbfc; /* Light blue */
+    --background-image: url('https://images.unsplash.com/photo-1439405326854-014607f694d7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+body[data-theme="mountain"] {
+    --primary-color: #6c757d; /* Muted grey */
+    --secondary-color: #495057; /* Darker muted grey */
+    --text-color: #f8f9fa; /* Off-white */
+    --background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+header {
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Keep header at top */
+    top: 0;
+    left: 0;
+    z-index: 10; /* Ensure it's above other content */
+    transition: background-color 0.5s;
+}
+
+/* Adjust main content padding to not be hidden by fixed header */
+body > .app {
+    margin-top: 80px; /* Adjust based on header height */
+    margin-bottom: 20px;
+}
+
+.theme-selector, .progress-tracker, #zen-mode, #about-btn {
+    display: flex;
+    align-items: center;
+}
+
+.theme-selector button, .progress-tracker, #zen-mode, #about-btn {
+    background: none;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, opacity 0.5s, visibility 0.5s;
+    font-size: 0.9rem;
+}
+
+.theme-selector button svg, .progress-tracker svg, #zen-mode svg, #about-btn svg {
+    margin-right: 0.5rem;
+    width: 18px; /* Adjust icon size */
+    height: 18px;
+}
+
+.theme-selector button.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.theme-selector button:hover, #zen-mode:hover, #about-btn:hover,
+.audio-controls button:hover, #new-affirmation:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.app {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 800px; /* Increased max-width for better layout */
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for responsiveness */
+    justify-content: center;
+    gap: 2rem; /* Spacing between sections */
+}
+
+.meditation-container, .controls-container {
+    flex: 1; /* Allow sections to grow */
+    min-width: 300px; /* Minimum width before wrapping */
+}
+
+.breathing-circle-container {
+    position: relative;
+    width: 250px; /* Slightly larger circle */
+    height: 250px;
+    margin: 0 auto 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.breathing-circle {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: breathing 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    opacity: 0.8;
+    transition: transform 0.3s, filter 0.3s, background-color 0.5s;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Add some depth */
+}
+
+.breathing-circle:hover {
+    transform: scale(1.05); /* Subtle hover effect on the circle itself */
+}
+
+@keyframes breathing {
+    0%, 100% { transform: scale(0.8); filter: blur(2px); opacity: 0.7; }
+    50% { transform: scale(1.1); filter: blur(0px); opacity: 1; }
+}
+
+#visualizer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Visualizer on top of breathing circle */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+meditation-timer {
+    display: block; /* Web component display */
+    color: var(--text-color);
+    margin-top: 1rem;
+    /* Styles for shadow DOM buttons inside meditation-timer */
+    --timer-button-bg: transparent;
+    --timer-button-border: 1px solid var(--text-color);
+    --timer-button-color: var(--text-color);
+    --timer-button-hover-bg: var(--primary-color);
+}
+
+meditation-timer::part(button) {
+    background-color: var(--timer-button-bg);
+    border: var(--timer-button-border);
+    color: var(--timer-button-color);
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+meditation-timer::part(button):hover {
+    background-color: var(--timer-button-hover-bg);
+    box-shadow: 0 0 10px var(--timer-button-hover-bg);
+}
+
+
+.controls-container h3 {
+    margin-top: 0;
+    color: var(--text-color);
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.audio-controls button, #new-affirmation {
+    background-color: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+#affirmation {
+    font-style: italic;
+    color: var(--text-color);
+    min-height: 3em; /* Ensure space for longer affirmations */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+
+#notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(var(--primary-color-rgb), 0.8); /* Use primary color for notification */
+    color: var(--text-color);
+    padding: 1.5rem 2.5rem;
+    border-radius: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+    z-index: 100;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    font-size: 1.1rem;
+}
+
+#notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Zen Mode */
+body.zen .app > .controls-container,
+body.zen .app > .meditation-container > .timer-container,
+body.zen header > .theme-selector,
+body.zen header > .progress-tracker,
+body.zen header > #about-btn {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+body.zen header {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+body.zen #zen-mode {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.zen .app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+/* Modal for About Section */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 101;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    color: #333;
+    padding: 2.5rem;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    animation: modalSlideUp 0.4s forwards;
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.modal-content h2 {
+    color: var(--primary-color, #333); /* Use theme primary color for heading */
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.modal-content ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+.modal-content ul li {
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 1rem;
+        position: static; /* Allow header to scroll with content on small screens */
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    body > .app {
+        margin-top: 20px; /* Adjust for static header */
+    }
+
+    .theme-selector {
+        margin-bottom: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .theme-selector button, #zen-mode, #about-btn {
+        margin: 0.5rem;
+        flex: 1; /* Allow buttons to take more width */
+        justify-content: center;
+    }
+
+    .progress-tracker {
+        margin-top: 1rem;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .app {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .breathing-circle-container {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 1rem;
+    }
+
+    .controls-container {
+        width: 100%; /* Full width for controls */
+    }
+
+    .audio-controls, .affirmation-container {
+        margin-bottom: 1.5rem;
+    }
+
+    #notification {
+        padding: 1rem;
+        width: 80%;
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
