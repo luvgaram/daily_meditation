@@ -40,6 +40,7 @@ A mindfulness and meditation app designed to provide a calming and immersive exp
 - **Local Server ES Module Issue**: Fixed a `ReferenceError: require is not defined` error in the local development server (`server.js`) by converting CommonJS `require` statements to ES module `import` statements and adding `__dirname`/`__filename` compatibility for Node.js ES modules.
 - **Serverless Function 500 Error**: Fixed a 500 Internal Server Error in the `/api/checkout` function. The error was caused by an incorrect payload being sent to the Polar SDK. The code was updated to send `products: [productId]` instead of `product_id: productId`, as required by the Polar API.
 - **Cloudflare Pages Build/405 Error**: Fixed a build failure and a subsequent 405 "Method Not Allowed" error on the deployed Cloudflare Pages site. The serverless function (`functions/api/checkout.js`) was refactored to be purely Cloudflare-native by only exporting the required `onRequestPost` function. The local Express server (`server.js`) was updated to duplicate the checkout logic for local testing, ensuring both environments work correctly.
+- **Cloudflare Build Dependencies**: Added a `build` script (`"build": "npm install"`) to `package.json` to ensure Cloudflare Pages installs the necessary `node_modules` for the serverless function to resolve its dependencies.
 
 ## Local Development
 
