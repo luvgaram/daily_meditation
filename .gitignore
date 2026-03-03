@@ -1,0 +1,4 @@
+# Local env
+.gitignore
+node_modules/\nfirebase-debug.log
+node_modules/\npolar.txt
