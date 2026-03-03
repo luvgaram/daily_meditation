@@ -33,6 +33,7 @@ A mindfulness and meditation app designed to provide a calming and immersive exp
 
 ## Bug Fixes
 
+- **Breathing Circle Animation**: Restored the CSS for the breathing circle animation, which was accidentally removed during a previous refactoring.
 - **Zen Mode Exit**: Corrected a flaw where the "Exit Zen Mode" button would become invisible, making it difficult to leave Zen Mode. The button is now always visible and accessible when Zen Mode is active.
 - **Header Button Overflow**: Fixed an issue where header buttons were getting cut off on smaller screens. The header's CSS was simplified to use a centered, wrapping flexbox layout (`display: flex`, `flex-wrap: wrap`, `justify-content: center`). This ensures all header elements are visible and properly aligned on all screen sizes without introducing stacking bugs.
 - **Module Resolution & SDK Usage**: Fixed a series of errors related to the Polar SDK. The implementation was changed to use the correct client-side SDK (`@polar-sh/checkout`), import it from a CDN with the correct named import syntax, and use the appropriate method (`PolarEmbedCheckout.create()`) to initiate the checkout. This has now been superseded by the serverless function approach.
@@ -58,3 +59,8 @@ To run this project locally, follow these steps:
     POLAR_API_TOKEN=your_polar_api_token_here
     ```
     The `POLAR_PRODUCT_ID` is hardcoded in `main.js`.
+4.  **Testing Redirects Locally:**
+    The Polar checkout process requires a publicly accessible `success_url` to redirect the user back to your application. Since `http://localhost:3000` is not public, you will need to use a tunneling service like `ngrok`.
+    *   Run `ngrok http 3000` in a separate terminal.
+    *   Copy the public forwarding URL provided by ngrok (e.g., `https://<your-ngrok-subdomain>.ngrok.io`).
+    *   In `functions/api/checkout.js`, temporarily replace `req.headers.origin` with your ngrok URL to test the redirect flow.

@@ -22,9 +22,18 @@ export default async function handler(req, res) {
       server: "sandbox",
     });
 
+    // IMPORTANT: For Polar to redirect back to your local server,
+    // the success_url must be a publicly accessible URL. When testing
+    // locally, you can use a service like ngrok to expose your localhost.
+    //
+    // 1. Run `ngrok http 3000` in a separate terminal.
+    // 2. Replace the placeholder below with the forwarding URL from ngrok.
+    const successUrl = `${req.headers.origin}?payment_success=true`; // Replace req.headers.origin with your ngrok URL for local testing.
+    // For example: const successUrl = `https://<your-ngrok-subdomain>.ngrok.io?payment_success=true`;
+    
     const checkout = await polar.checkouts.create({
       products: [productId],
-      success_url: `${req.headers.origin}?payment_success=true`,
+      success_url: successUrl,
     });
 
     return res.status(200).json({ checkout_url: checkout.url });
