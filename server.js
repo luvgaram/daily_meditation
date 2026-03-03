@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname)));
 
 // API route for the checkout function
 app.post('/api/checkout', async (req, res) => {
+  console.log('server.js received method:', req.method); // Add this line
   try {
     // Dynamically import the serverless function
     // This assumes the serverless function is written as an ES Module
