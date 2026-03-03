@@ -354,3 +354,62 @@ aboutSection.addEventListener('click', (e) => {
         aboutSection.classList.remove('show');
     }
 });
+
+// --- SPECIAL SESSION ---
+const specialSessionBtn = document.getElementById('special-session-btn');
+
+specialSessionBtn.addEventListener('click', async () => {
+  try {
+    // First, get the product ID from the local config
+    const configResponse = await fetch('/config.json');
+    if (!configResponse.ok) {
+      throw new Error(`HTTP error! status: ${configResponse.status}`);
+    }
+    const localConfig = await configResponse.json();
+    const { polarProductId } = localConfig;
+
+    // Now, call our serverless function to create a checkout session
+    const checkoutResponse = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId: polarProductId }),
+    });
+
+    if (!checkoutResponse.ok) {
+      const errorBody = await checkoutResponse.json();
+      throw new Error(errorBody.error || 'Failed to create checkout session');
+    }
+
+    const { checkout_url } = await checkoutResponse.json();
+
+    // Redirect the user to the Polar checkout page
+    window.location.href = checkout_url;
+
+  } catch (err) {
+    console.error('Error during checkout:', err);
+    alert(`Could not initiate payment. Please check the browser console for more details. Error: ${err.message}`);
+  }
+});
+
+// --- PAYMENT SUCCESS NOTIFICATION ---
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('payment_success') && urlParams.get('payment_success') === 'true') {
+    const notification = document.getElementById('payment-success-notification');
+    notification.hidden = false;
+    notification.classList.add('show');
+  }
+});
+
+const closePaymentSuccessBtn = document.getElementById('close-payment-success');
+if (closePaymentSuccessBtn) {
+  closePaymentSuccessBtn.addEventListener('click', () => {
+    const notification = document.getElementById('payment-success-notification');
+    notification.hidden = true;
+    notification.classList.remove('show');
+    // Clean up the URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  });
+}
