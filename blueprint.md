@@ -24,7 +24,7 @@ A mindfulness and meditation app designed to provide a calming and immersive exp
   - **Sandbox Environment**: The SDK is now correctly configured to use Polar's sandbox environment for development and testing.
   - **Client-Side Flow**: The client-side JavaScript now calls this serverless function and redirects the user to the returned checkout URL.
   - **Payment Success Notification**: After a successful payment, the user is redirected back to the main page, which now displays a "Payment Successful" notification.
-  - **Configuration**: The client passes the Sandbox Product ID from `config.json` to the serverless function. The serverless function loads the `POLAR_API_TOKEN` from a `.dev.vars` file for local development.
+  - **Configuration**: The `POLAR_PRODUCT_ID` is now hardcoded in `main.js` (as it's not a sensitive secret), and the serverless function loads the `POLAR_API_TOKEN` from a `.dev.vars` file for local development.
 - **Accessibility and Design**:
   - **Responsive Design**: A fully responsive and accessible application that provides a seamless experience for all users on all devices.
   - **Modern UI**: A modern and intuitive user interface with a clean layout, beautiful typography, and visually appealing design elements.
@@ -57,4 +57,4 @@ To run this project locally, follow these steps:
     ```
     POLAR_API_TOKEN=your_polar_api_token_here
     ```
-    The `POLAR_PRODUCT_ID` is located in `config.json`.
+    The `POLAR_PRODUCT_ID` is hardcoded in `main.js`.

@@ -357,24 +357,17 @@ aboutSection.addEventListener('click', (e) => {
 
 // --- SPECIAL SESSION ---
 const specialSessionBtn = document.getElementById('special-session-btn');
+const POLAR_PRODUCT_ID = 'cc9ad4fb-fd62-400c-8ef5-ab9e3fe9bf46'; // Hardcoded as it's not a secret
 
 specialSessionBtn.addEventListener('click', async () => {
   try {
-    // First, get the product ID from the local config
-    const configResponse = await fetch('/config.json');
-    if (!configResponse.ok) {
-      throw new Error(`HTTP error! status: ${configResponse.status}`);
-    }
-    const localConfig = await configResponse.json();
-    const { polarProductId } = localConfig;
-
     // Now, call our serverless function to create a checkout session
     const checkoutResponse = await fetch('/api/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ productId: polarProductId }),
+      body: JSON.stringify({ productId: POLAR_PRODUCT_ID }),
     });
 
     if (!checkoutResponse.ok) {
